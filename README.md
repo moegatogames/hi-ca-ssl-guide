@@ -60,23 +60,40 @@ http 方式需要在你的网站根目录下放置一个文件，来验证你的
 如果服务器上已经有多个站点，若未设置默认站点，直接访问IP会访问第一个或最后一个添加的站点。请注意，如果你设置了直接访问IP返回403等规则，需要暂时删除这些规则。如果不清楚直接访问IP会访问到哪个目录，可以自行使用IP访问你的服务器测试。也可以直接创建站点，域名为你的IP，这样直接使用IP访问就会被定向到这个站点的文件夹
 </p>
 </details>
-![image](https://user-images.githubusercontent.com/110012832/180934634-650f1b4a-32e8-43b6-854a-05f4b2bcc05b.png)
+
+![image](https://user-images.githubusercontent.com/110012832/180935506-7d58fba9-3d4c-4288-acbb-701f693cca1e.png)
+
 安装网页服务器和查找路径请参考网上的其它教程
+
 安装完成后，进入到你的服务器终端，输入以下命令行
+
 ```acme.sh --issue -d [你的IP/域名] --webroot [网站根目录] --server https://acme.hi.cn/directory```
+
 正确格式例如
+
 ```acme.sh --issue -d 11.4.5.14 --webroot /www/wwwroot/114514 --server https://acme.hi.cn/directory```
+
 ```acme.sh --issue -d 1145:1419:1981:0114:5141:9198:1011:4514 --webroot /home/wwwroot/ --server https://acme.hi.cn/directory```
+
 稍等片刻，提示签发成功即可下载证书，位于 ```/root/.acme.sh/你的域名``` 比如 ```/root/.acme.sh/11.4.5.14```
+
 若提示 acme.sh 命令不存在，直接 cd 到 /root 目录下的 .acme.sh 目录下只用相对路径执行命令即可。
+
 只需要指定域名, 并指定域名所在的网站根目录. acme.sh 会全自动的生成验证文件, 并放到网站的根目录, 然后自动完成验证. 最后会聪明的删除验证文件. 整个过程没有任何副作用。
+
 如果你用的 apache服务器, acme.sh 还可以智能的从 apache的配置中自动完成验证, 你不需要指定网站根目录：
+
 ```acme.sh --issue  -d mydomain.com   --apache --server https://acme.hi.cn/directory```
+
 如果你使用Nginx或者反代，acme.sh还可以智能地更改Nginx配置文件自动完成验证，从而不需要指定网站根目录：
+
 ```acme.sh --issue  -d mydomain.com   --nginx --server https://acme.hi.cn/directory```
+
 注意，无论是 apache 还是 nginx 模式，acme.sh在完成验证之后，会恢复到之前的状态，都不会私自更改你本身的配置。好处是你不用担心配置被搞坏，也有一个缺点，你需要自己配置 ssl 的配置，否则只能成功生成证书，你的网站还是无法访问https。但是为了安全, 你还是自己手动改配置吧。
 如果你还没有运行任何 web 服务，80 端口是空闲的，那么 acme.sh 还能假装自己是一个webserver，临时监听80 端口，完成验证：
+
 ```acme.sh  --issue -d mydomain.com   --standalone --server https://acme.hi.cn/directory```
+
 更高级的用法请参考: https://github.com/Neilpang/acme.sh/wiki/How-to-issue-a-cert
 ### 常见问题
 - IP证书只能通过HTTP验证签发，因此只能签发单域名证书，不能为多个IP签发一张证书
